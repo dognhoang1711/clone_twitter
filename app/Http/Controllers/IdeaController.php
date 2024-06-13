@@ -22,7 +22,7 @@ class IdeaController extends Controller
         // if (auth()->id() !== $idea->user_id) {
         //     return redirect()->route('dashboard')->with('sucess', 'bạn chỉ được xóa ý tưởng của mình');
         // }
-        $this->authorize('idea.delete', $idea);
+        $this->authorize('delete', $idea);
         $idea->delete();
         return redirect()->route('dashboard')->with('sucess', 'đã xóa thành công');
     }
@@ -41,7 +41,7 @@ class IdeaController extends Controller
         // if (auth()->id() !== $idea->user_id) {
         //     return redirect()->route('dashboard')->with('sucess', 'bạn chỉ có thể sửa ý tưởng của mình');
         //     }
-        $this->authorize('idea.update',$idea);
+        $this->authorize('update', $idea);
         request()->validate([
             'content' => 'required|max:100'
         ]);
