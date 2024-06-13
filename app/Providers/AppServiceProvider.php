@@ -23,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
     {
 
         Paginator::useBootstrapFive();
-        App::setLocale('es');
+
     }
 }

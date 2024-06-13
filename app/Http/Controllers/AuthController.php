@@ -20,7 +20,7 @@ class AuthController extends Controller
             'password' => 'required|confirmed',
             'name' => 'required|min:5'
         ]);
-        $user = User::create([
+        User::create([
             'email' => $vadidation['email'],
             'password' => Hash::make($vadidation['password']),
             'name' => $vadidation['name']
@@ -38,16 +38,17 @@ class AuthController extends Controller
             'email' => 'required|email',
             'password' => 'required',
         ]);
-       if(auth()->attempt($vadidation)){
-        request()->session()->regenerate();
-        return redirect()->route('dashboard')->with('sucess','bạn đã đăng nhập thành công');
-       }
+        if (auth()->attempt($vadidation)) {
+            request()->session()->regenerate();
+            return redirect()->route('dashboard')->with('sucess', 'bạn đã đăng nhập thành công');
+        }
 
         return redirect()->route('show-login')->withErrors([
             'errolLogin' => 'tài khoản hoặc mật khẩu không đúng'
         ]);
     }
-    public function logout(){
+    public function logout()
+    {
         auth()->logout();
         request()->session()->invalidate();
         request()->session()->regenerateToken();

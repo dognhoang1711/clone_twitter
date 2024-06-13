@@ -25,14 +25,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Gate::define('admin', function (): bool {
-        //     return (bool)auth()->user()->id_admin;
-        // });
-        // Gate::define('idea.delete', function (User $user, idea $idea): bool {
-        //     return ((bool)auth()->user()->id_admin|| auth()->id() === $idea->user_id);
-        // });
-        // Gate::define('idea.update', function (User $user, idea $idea): bool {
-        //     return ((bool)auth()->user()->id_admin || auth()->id() === $idea->user_id);
-        // });
+        Gate::define('admin', function (): bool {
+            return auth()->user()->is_admin;
+        });
     }
 }
