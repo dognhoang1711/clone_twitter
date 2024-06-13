@@ -18,7 +18,12 @@ class idea extends Model
     {
         return $this->hasMany(Comment::class);
     }
-    public function user(){
+    public function user()
+    {
         return $this->belongsTo(User::class);
+    }
+    public function scopeSearch($query, $search = '')
+    {
+        $query->where('content', 'like', '%' . $search . '%');
     }
 }

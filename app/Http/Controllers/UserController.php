@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -25,7 +26,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        
+
         $ideas = $user->idea()->paginate(2);
         return view('user.show', compact('user', 'ideas'));
     }
@@ -43,13 +44,9 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(UpdateUserRequest $request, User $user)
     {
-        $validated = $request->validate([
-            'name' => 'required|max:100',
-            'bio' => 'required|max:200',
-            'image' => 'image|nullable'
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('image')) {
             // Xóa file hình ảnh cũ nếu có (tùy chọn)

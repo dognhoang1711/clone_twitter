@@ -14,9 +14,10 @@
             </div>
             <div>
                 @auth
-                    @if (Auth::id() === $user->id)
+                    @can('update', $user)
                         <a href="{{ route('users.edit', $user->id) }}">edit</a>
-                    @endif
+                    @endcan
+
                 @endauth
             </div>
         </div>
@@ -36,7 +37,7 @@
                     </span> {{ $user->comment()->count() }} </a>
             </div>
             @auth
-                @if (Auth::id() !== $user->id)
+                @if (!Auth::user()->is($user))
                     @if (Auth::user()->follows($user))
                         <div class="mt-3">
                             <form action="{{ route('user.unfollow', $user->id) }}" method="POST">

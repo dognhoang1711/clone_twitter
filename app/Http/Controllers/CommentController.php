@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CommentRequest;
 use App\Models\Comment;
 use App\Models\idea;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
-    public function add_comment(idea $idea)
+    public function add_comment(CommentRequest $request, idea $idea)
     {
-        $comment = new Comment();
-        $comment->idea_id = $idea->id;
-        $comment->user_id = auth()->id();
-        $comment->content = request()->get('comment', '');
-        $comment->save();
-        return redirect()->route('dashboard',$idea->id)->with('sucess','comment thành công');
+        $validatedData = $request->validated();
+        $validatedData['idea_id'] = $idea->id;
+        $validatedData['user_id'] = auth()->id();
+        Comment::create($validatedData);
+        return redirect()->route('dashboard', $idea->id)->with('sucess', 'comment thành công');
     }
     //
 }

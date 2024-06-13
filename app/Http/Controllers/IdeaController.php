@@ -2,19 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\IdeaRequest;
 use App\Models\idea;
 use Illuminate\Http\Request;
 
 class IdeaController extends Controller
 {
-    public function store()
+    public function store(IdeaRequest $ideaRequest)
     {
         //store idea logic
-        $vadidate = request()->validate([
-            'content' => 'required|max:100'
-        ]);
+        $vadidate = $ideaRequest->validated();
         $vadidate['user_id'] = auth()->id();
-        $idea = idea::create($vadidate);
+        idea::create($vadidate);
         return redirect()->route('dashboard')->with('sucess', 'thêm mới thành công 1 idea');
     }
     public function destroy(idea $idea)
@@ -33,6 +32,7 @@ class IdeaController extends Controller
     }
     public function edit(idea $idea)
     {
+        $this->authorize('update', $idea);
         $editting = true;
         return view('idea.show', compact('idea', 'editting'));
     }
