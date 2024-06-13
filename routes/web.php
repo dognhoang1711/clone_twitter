@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\IdeaController as AdminIdeaController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
@@ -51,7 +52,8 @@ Route::post('user/{user}/unfollow', [FollowController::class, 'unfollow'])->name
 Route::get('profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 
 
-Route::middleware('auth', 'can:admin')->prefix('/admin')->as('admin.')->group(function () {
+Route::middleware('auth','can:admin')->prefix('/admin')->as('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/user',[AdminUserController::class,'index'])->name('user');
+    Route::get('/idea',[AdminIdeaController::class,'index'])->name('idea');
 });
