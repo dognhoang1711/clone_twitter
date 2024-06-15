@@ -13,6 +13,10 @@
                 <a class="nav-link" href="{{ route('admin.idea') }}">
                     <span>Ideas</span></a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('admin.authorize') }}">
+                    <span>Thêm quyền cho tài khoản</span></a>
+            </li>
         </ul>
     </div>
 

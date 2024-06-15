@@ -12,7 +12,6 @@ class idea extends Model
     protected $fillable = [
         'user_id',
         'content',
-        'like'
     ];
     public function comments()
     {
