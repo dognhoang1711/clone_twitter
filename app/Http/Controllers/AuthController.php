@@ -40,7 +40,7 @@ class AuthController extends Controller
         ]);
         if (auth()->attempt($vadidation)) {
             request()->session()->regenerate();
-            return redirect()->route('dashboard')->with('sucess', 'bạn đã đăng nhập thành công');
+            return redirect()->route('user.index')->with('sucess', 'bạn đã đăng nhập thành công');
         }
 
         return redirect()->route('show-login')->withErrors([

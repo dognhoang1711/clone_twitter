@@ -10,6 +10,9 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgotPassController;
 use App\Http\Controllers\IdeaController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\User_Role_PermissionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use App\Models\User;
@@ -18,6 +21,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Spatie\Permission\Contracts\Permission;
 
 /*
 |--------------------------------------------------------------------------
@@ -48,12 +52,19 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard
 // });
 
 Route::resource('ideas', IdeaController::class)->middleware('auth')->only([
-    'create', 'store', 'show', 'edit', 'destroy', 'update'
+    'create',
+    'store',
+    'show',
+    'edit',
+    'destroy',
+    'update'
 ]);
 
 Route::post('/ideas/{idea}/comment', [CommentController::class, 'add_comment'])->name('ideas.comment')->middleware('auth');
 Route::resource('users', UserController::class)->middleware('auth')->only([
-    'update', 'show', 'edit'
+    'update',
+    'show',
+    'edit'
 ]);
 
 Route::post('user/{user}/follow', [FollowController::class, 'follow'])->name('user.follow')->middleware('auth');
@@ -61,11 +72,11 @@ Route::post('user/{user}/unfollow', [FollowController::class, 'unfollow'])->name
 Route::get('profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
 
 
-Route::middleware('auth', 'can:admin')->prefix('/admin')->as('admin.')->group(function () {
-    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
-    Route::get('/user', [AdminUserController::class, 'index'])->name('user');
-    Route::get('/idea', [AdminIdeaController::class, 'index'])->name('idea');
-});
+// Route::middleware('auth', 'can:admin')->prefix('/admin')->as('admin.')->group(function () {
+//     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+//     Route::get('/user', [AdminUserController::class, 'index'])->name('user');
+//     Route::get('/idea', [AdminIdeaController::class, 'index'])->name('idea');
+// });
 
 
 //route add quyen cho tai khoản
@@ -119,3 +130,12 @@ Route::post('/reset-password', function (Request $request) {
         ? redirect()->route('login')->with('status', __($status))
         : back()->withErrors(['email' => [__($status)]]);
 })->middleware('guest')->name('password.update');
+
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('permission', PermissionController::class);
+    Route::resource('user', User_Role_PermissionController::class);
+    Route::resource('role', RoleController::class);
+    Route::get('role/{id}/permission', [RoleController::class, 'add_permission'])->name('add_permission');
+    Route::put('role/{id}/permission', [RoleController::class, 'givepermission_to_Role'])->name('add_permission_to_role');
+});
+

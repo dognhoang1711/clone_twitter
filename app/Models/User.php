@@ -9,9 +9,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
+
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -69,7 +71,8 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'follower_user', 'user_id', 'follower_id')->withTimestamps();
     }
-    public function follows(User $user){
-        return $this->following()->where('user_id',$user->id)->exists();
+    public function follows(User $user)
+    {
+        return $this->following()->where('user_id', $user->id)->exists();
     }
 }
